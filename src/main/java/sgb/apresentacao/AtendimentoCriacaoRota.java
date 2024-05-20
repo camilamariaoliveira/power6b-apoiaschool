@@ -35,7 +35,7 @@ public class AtendimentoCriacaoRota extends VerticalLayout {
             servico.salvar(atendimento);
 
             var atualTela = UI.getCurrent();
-            atualTela.navigate(AutorPesquisaRota.class);
+            atualTela.navigate(AtendimentoHistoricoRota.class);
         } catch (RuntimeException excecao) {
             tratar(excecao);
         }

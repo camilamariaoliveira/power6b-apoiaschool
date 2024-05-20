@@ -3,7 +3,6 @@ package sgb.apresentacao;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import sgb.entidades.Atendimento;
-import sgb.entidades.Autor;
 
 public class AtendimentoFormulario extends FormLayout {
     private TextField idCampo;
