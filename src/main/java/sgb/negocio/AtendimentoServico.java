@@ -16,7 +16,9 @@ public class AtendimentoServico {
         }
         this.repositorio = repositorio;
 
+        var paciente1 = new Atendimento(232, "Camila Maria de Oliveira");
 
+        var paciente2 = new Atendimento(323, "Luiz Roberto Lobato Lobato");
     }
 
     public void salvar(Atendimento atendimento) {
@@ -30,5 +32,13 @@ public class AtendimentoServico {
 
     public List<Atendimento> pesquisar() {
         return repositorio.pesquisar();
+    }
+
+    public Atendimento obter(Integer id) {
+        return repositorio.obter(id);
+    }
+
+    public Atendimento excluir(int id) {
+        return repositorio.obter(id);
     }
 }
