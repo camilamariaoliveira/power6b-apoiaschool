@@ -10,7 +10,7 @@ import java.util.List;
 public class AtendimentoRespositorio {
     private List<Atendimento> atendimentos;
 
-    public AtendimentoRespositorio(List<Atendimento> atendimentos) {atendimentos = new ArrayList<>();
+    public AtendimentoRespositorio() {atendimentos = new ArrayList<>();
     }
 
     public void salvar(Atendimento atendimento) {
@@ -32,8 +32,18 @@ public class AtendimentoRespositorio {
     }
 
     public List<Atendimento> pesquisar() {
-        ArrayList<Atendimento> copia = new ArrayList<>();
+        var copia = new ArrayList<Atendimento>();
         copia.addAll(atendimentos);
+        //copia.sort();
         return copia;
+    }
+
+    public Atendimento obter(int id) {
+        for (var atendimento : atendimentos) {
+            if (atendimento.getId() == id) {
+                return atendimento;
+            }
+        }
+        return null;
     }
 }
