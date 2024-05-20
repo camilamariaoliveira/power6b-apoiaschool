@@ -24,12 +24,17 @@ public class AtendimentoCriacaoRota extends VerticalLayout {
         var salvarBotao = new Button("Salvar");
         salvarBotao.addClickListener(this::salvar);
 
+        var cancelarBotao = new Button("Cancelar");
+        cancelarBotao.addClickListener(this::cancelar);
+
         var botoes = new HorizontalLayout();
         botoes.add(salvarBotao);
+        botoes.add(cancelarBotao);
+
         add(botoes);
     }
 
-    private void salvar(ClickEvent<Button> buttonClickEvent) {
+    private void salvar(ClickEvent<Button> evento) {
         try {
             var atendimento = formulario.criarAtendimento();
             servico.salvar(atendimento);
@@ -39,6 +44,9 @@ public class AtendimentoCriacaoRota extends VerticalLayout {
         } catch (RuntimeException excecao) {
             tratar(excecao);
         }
+    }
+
+    private void cancelar(ClickEvent<Button> evento) {
     }
 
     private void tratar(RuntimeException excecao) {

@@ -24,4 +24,18 @@ public class AtendimentoFormulario extends FormLayout {
 
         return new Atendimento(id, nome);
     }
+
+    public void preencherAtendimento(Atendimento atendimento) {
+        var nome = nomeCampo.getValue();
+        atendimento.setNome(nome);
+    }
+
+    public void preencherCampos(Atendimento atendimento) {
+        var id = atendimento.getId();
+        var idString = String.valueOf(id);
+        idCampo.setValue(idString);
+
+        var nome = atendimento.getNome();
+        nomeCampo.setValue(nome);
+    }
 }
