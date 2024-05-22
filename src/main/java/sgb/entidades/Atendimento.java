@@ -10,6 +10,7 @@ public class Atendimento {
     Pessoa pessoa;
     String relacionado;
     Apoio atendente;
+    String psicologo;
     boolean status;
     LocalDate data;
     String anotacoes;
@@ -20,12 +21,13 @@ public class Atendimento {
         this.nome = nome;
     }
 
-    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data) {
+    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data, String psicologo) {
         this.id = id;
         this.nome = nome;
         this.curso= curso;
         this.periodo = periodo;
         this.data = data;
+        this.psicologo = psicologo;
     }
 
     public Atendimento(int id, Pessoa pessoa, String relacionado, Apoio atendente, String data, String anotacoes, String duracao) {
@@ -96,6 +98,17 @@ public class Atendimento {
             throw new IllegalArgumentException();
         }
         this.relacionado = relacionado;
+    }
+
+    public String getPsicologo() {
+        return psicologo;
+    }
+
+    public void setPsicologo(String psicologo) {
+        if (psicologo == null) {
+            throw new IllegalArgumentException("Psicológo inválido");
+        }
+        this.psicologo = psicologo;
     }
 
     public Apoio getAtendente() {

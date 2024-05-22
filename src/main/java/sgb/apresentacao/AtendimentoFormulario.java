@@ -16,6 +16,8 @@ public class AtendimentoFormulario extends FormLayout {
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
     private DatePicker dataCampo;
+    private TextField apoioCampo;
+
 
     public AtendimentoFormulario() {
         var container = new VerticalLayout();
@@ -39,6 +41,8 @@ public class AtendimentoFormulario extends FormLayout {
         periodoCampo.setMax(12);
         periodoCampo.setMin(1);
 
+        apoioCampo = new TextField("Último Atendente: ");
+
         var linha1 = new HorizontalLayout();
         var linha2 = new HorizontalLayout();
         linha1.add(idCampo);
@@ -46,6 +50,7 @@ public class AtendimentoFormulario extends FormLayout {
         linha1.add(dataCampo);
         linha2.add(cursoCampo);
         linha2.add(periodoCampo);
+        linha2.add(apoioCampo);
         container.add(linha1);
         container.add(linha2);
         add(container);
@@ -59,8 +64,9 @@ public class AtendimentoFormulario extends FormLayout {
         var curso = cursoCampo.getValue();
         var periodo = periodoCampo.getValue();
         var data = dataCampo.getValue();
+        var apoio = apoioCampo.getValue();
 
-        return new Atendimento(id, nome, curso, periodo, data);
+        return new Atendimento(id, nome, curso, periodo, data, apoio);
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
@@ -68,6 +74,7 @@ public class AtendimentoFormulario extends FormLayout {
         var curso = cursoCampo.getValue();
         var periodo = periodoCampo.getValue();
         var data = dataCampo.getValue();
+        var apoio = apoioCampo.getValue();
         atendimento.setNome(nome);
         atendimento.setCurso(curso);
         atendimento.setPeriodo(periodo);
@@ -90,5 +97,8 @@ public class AtendimentoFormulario extends FormLayout {
 
         var data = atendimento.getData();
         dataCampo.setValue(data);
+
+        var apoio = atendimento.getPsicologo();
+        apoioCampo.setValue(apoio);
     }
 }
