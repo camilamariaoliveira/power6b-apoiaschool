@@ -1,5 +1,6 @@
 package sgb;
 
+import com.vaadin.flow.theme.lumo.Lumo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,8 +15,8 @@ import com.vaadin.flow.theme.Theme;
  *
  */
 @SpringBootApplication
-@Theme(value = "mytodo")
-
+//@Theme(value = "mytodo")
+@Theme(variant = Lumo.DARK)
 public class Application implements AppShellConfigurator {
 
 	public static void main(String[] args) {
