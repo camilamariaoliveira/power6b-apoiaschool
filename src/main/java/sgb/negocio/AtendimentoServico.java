@@ -15,10 +15,6 @@ public class AtendimentoServico {
             throw new IllegalArgumentException();
         }
         this.repositorio = repositorio;
-
-        var paciente1 = new Atendimento(232, "Camila Maria de Oliveira");
-
-        var paciente2 = new Atendimento(323, "Luiz Roberto Lobato Lobato");
     }
 
     public void salvar(Atendimento atendimento) {
