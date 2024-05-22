@@ -21,13 +21,14 @@ public class Atendimento {
         this.nome = nome;
     }
 
-    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data, String psicologo) {
+    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
         this.id = id;
         this.nome = nome;
         this.curso= curso;
         this.periodo = periodo;
         this.data = data;
         this.psicologo = psicologo;
+        this.anotacoes = anotacoes;
     }
 
     public Atendimento(int id, Pessoa pessoa, String relacionado, Apoio atendente, String data, String anotacoes, String duracao) {
