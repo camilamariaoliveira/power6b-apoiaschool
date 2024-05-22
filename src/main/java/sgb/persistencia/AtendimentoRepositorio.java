@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class AtendimentoRespositorio {
+public class AtendimentoRepositorio {
     private List<Atendimento> atendimentos;
 
-    public AtendimentoRespositorio() {atendimentos = new ArrayList<>();
+    public AtendimentoRepositorio() {atendimentos = new ArrayList<>();
     }
 
     public void salvar(Atendimento atendimento) {

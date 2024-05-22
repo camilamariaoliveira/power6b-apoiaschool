@@ -2,15 +2,15 @@ package sgb.negocio;
 
 import org.springframework.stereotype.Service;
 import sgb.entidades.Atendimento;
-import sgb.persistencia.AtendimentoRespositorio;
+import sgb.persistencia.AtendimentoRepositorio;
 
 import java.util.List;
 
 @Service
 public class AtendimentoServico {
-    private AtendimentoRespositorio repositorio;
+    private AtendimentoRepositorio repositorio;
 
-    public AtendimentoServico(AtendimentoRespositorio repositorio) {
+    public AtendimentoServico(AtendimentoRepositorio repositorio) {
         if (repositorio == null) {
             throw new IllegalArgumentException();
         }

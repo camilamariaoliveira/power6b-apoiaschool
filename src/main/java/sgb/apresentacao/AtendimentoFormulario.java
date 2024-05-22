@@ -1,19 +1,68 @@
 package sgb.apresentacao;
 
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.textfield.IntegerField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import sgb.entidades.Atendimento;
 
 public class AtendimentoFormulario extends FormLayout {
     private TextField idCampo;
     private TextField nomeCampo;
+    private Select<String> cursoCampo;
+    private IntegerField periodoCampo;
+    private DatePicker dataCampo;
+    private TextField apoioCampo;
+    private TextArea anotacoesCampo;
+
 
     public AtendimentoFormulario() {
-        idCampo = new TextField("Id");
-        add(idCampo);
+        var container = new VerticalLayout();
 
-        nomeCampo = new TextField("Nome");
-        add(nomeCampo);
+        idCampo = new TextField("Id: ");
+
+        nomeCampo = new TextField("Nome: ");
+
+        cursoCampo = new Select<>();
+        cursoCampo.setLabel("Curso: ");
+        cursoCampo.setItems("CC","Design","GTI","ADS","SI","Pós","Mestrado","Doutorado","Outro");
+        cursoCampo.setPlaceholder("Curso...");
+
+        dataCampo = new DatePicker();
+        dataCampo.setLabel("Data do últ. atendimento: ");
+
+        periodoCampo = new IntegerField();
+        periodoCampo.setLabel("Período: ");
+        periodoCampo.setValue(1);
+        periodoCampo.setStepButtonsVisible(true);
+        periodoCampo.setMax(12);
+        periodoCampo.setMin(1);
+
+        apoioCampo = new TextField("Último Atendente: ");
+
+        anotacoesCampo = new TextArea("Anotações: ");
+        anotacoesCampo.setWidth("610px");
+
+
+        var linha1 = new HorizontalLayout();
+        var linha2 = new HorizontalLayout();
+        var linha3 = new HorizontalLayout();
+        linha1.add(idCampo);
+        linha1.add(nomeCampo);
+        linha1.add(dataCampo);
+        linha2.add(cursoCampo);
+        linha2.add(periodoCampo);
+        linha2.add(apoioCampo);
+        linha3.add(anotacoesCampo);
+        container.add(linha1);
+        container.add(linha2);
+        container.add(linha3);
+        add(container);
     }
 
     public Atendimento criarAtendimento() {
@@ -21,13 +70,28 @@ public class AtendimentoFormulario extends FormLayout {
         var id = Integer.parseInt(idString);
 
         var nome = nomeCampo.getValue();
+        var curso = cursoCampo.getValue();
+        var periodo = periodoCampo.getValue();
+        var data = dataCampo.getValue();
+        var apoio = apoioCampo.getValue();
+        var anotacoes = anotacoesCampo.getValue();
 
-        return new Atendimento(id, nome);
+        return new Atendimento(id, nome, curso, periodo, data, apoio, anotacoes);
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
         var nome = nomeCampo.getValue();
+        var curso = cursoCampo.getValue();
+        var periodo = periodoCampo.getValue();
+        var data = dataCampo.getValue();
+        var apoio = apoioCampo.getValue();
+        var anotacoes = anotacoesCampo.getValue();
         atendimento.setNome(nome);
+        atendimento.setCurso(curso);
+        atendimento.setPeriodo(periodo);
+        atendimento.setData(data);
+        atendimento.setPsicologo(apoio);
+        atendimento.setAnotacoes(anotacoes);
     }
 
     public void preencherCampos(Atendimento atendimento) {
@@ -37,5 +101,20 @@ public class AtendimentoFormulario extends FormLayout {
 
         var nome = atendimento.getNome();
         nomeCampo.setValue(nome);
+
+        var curso = atendimento.getCurso();
+        cursoCampo.setValue(curso);
+
+        var periodo = atendimento.getPeriodo();
+        periodoCampo.setValue(periodo);
+
+        var data = atendimento.getData();
+        dataCampo.setValue(data);
+
+        var apoio = atendimento.getPsicologo();
+        apoioCampo.setValue(apoio);
+
+        var anotacoes = atendimento.getAnotacoes();
+        anotacoesCampo.setValue(anotacoes);
     }
 }

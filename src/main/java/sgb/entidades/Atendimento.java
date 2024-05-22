@@ -1,28 +1,34 @@
 package sgb.entidades;
 
+import java.time.LocalDate;
+
 public class Atendimento {
     private int id;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     String nome;
+    String curso;
+    int periodo;
     Pessoa pessoa;
     String relacionado;
     Apoio atendente;
+    String psicologo;
     boolean status;
-    String data;
+    LocalDate data;
     String anotacoes;
     String duracao;
 
     public Atendimento(int id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
+        this.id = id;
+        this.nome = nome;
+        this.curso= curso;
+        this.periodo = periodo;
+        this.data = data;
+        this.psicologo = psicologo;
+        this.anotacoes = anotacoes;
     }
 
     public Atendimento(int id, Pessoa pessoa, String relacionado, Apoio atendente, String data, String anotacoes, String duracao) {
@@ -38,6 +44,39 @@ public class Atendimento {
             throw new IllegalArgumentException("Id inválido.");
         }
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        if (nome == null) {
+            throw new IllegalArgumentException("Nome inválido");
+        }
+        this.nome = nome;
+    }
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public void setCurso(String curso) {
+        if (curso == null) {
+            throw new IllegalArgumentException("Curso inválido");
+        }
+        this.curso = curso;
+    }
+
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        if (periodo < 0 || periodo > 12) {
+            throw new IllegalArgumentException("Período inválido");
+        }
+        this.periodo = periodo;
     }
 
     public Pessoa getPessoa() {
@@ -60,6 +99,17 @@ public class Atendimento {
             throw new IllegalArgumentException();
         }
         this.relacionado = relacionado;
+    }
+
+    public String getPsicologo() {
+        return psicologo;
+    }
+
+    public void setPsicologo(String psicologo) {
+        if (psicologo == null) {
+            throw new IllegalArgumentException("Psicológo inválido");
+        }
+        this.psicologo = psicologo;
     }
 
     public Apoio getAtendente() {
@@ -85,11 +135,11 @@ public class Atendimento {
         }
     }
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
