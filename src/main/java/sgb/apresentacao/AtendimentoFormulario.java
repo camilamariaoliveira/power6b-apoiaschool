@@ -1,5 +1,6 @@
 package sgb.apresentacao;
 
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -14,6 +15,7 @@ public class AtendimentoFormulario extends FormLayout {
     private TextField nomeCampo;
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
+    private DatePicker dataCampo;
 
     public AtendimentoFormulario() {
         var container = new VerticalLayout();
@@ -27,6 +29,9 @@ public class AtendimentoFormulario extends FormLayout {
         cursoCampo.setItems("CC","Design","GTI","ADS","SI","Pós","Mestrado","Doutorado","Outro");
         cursoCampo.setPlaceholder("Curso...");
 
+        dataCampo = new DatePicker();
+        dataCampo.setLabel("Data do últ. atendimento: ");
+
         periodoCampo = new IntegerField();
         periodoCampo.setLabel("Período: ");
         periodoCampo.setValue(1);
@@ -38,6 +43,7 @@ public class AtendimentoFormulario extends FormLayout {
         var linha2 = new HorizontalLayout();
         linha1.add(idCampo);
         linha1.add(nomeCampo);
+        linha1.add(dataCampo);
         linha2.add(cursoCampo);
         linha2.add(periodoCampo);
         container.add(linha1);
@@ -52,17 +58,20 @@ public class AtendimentoFormulario extends FormLayout {
         var nome = nomeCampo.getValue();
         var curso = cursoCampo.getValue();
         var periodo = periodoCampo.getValue();
+        var data = dataCampo.getValue();
 
-        return new Atendimento(id, nome, curso, periodo);
+        return new Atendimento(id, nome, curso, periodo, data);
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
         var nome = nomeCampo.getValue();
         var curso = cursoCampo.getValue();
         var periodo = periodoCampo.getValue();
+        var data = dataCampo.getValue();
         atendimento.setNome(nome);
         atendimento.setCurso(curso);
         atendimento.setPeriodo(periodo);
+        atendimento.setData(data);
     }
 
     public void preencherCampos(Atendimento atendimento) {
@@ -78,5 +87,8 @@ public class AtendimentoFormulario extends FormLayout {
 
         var periodo = atendimento.getPeriodo();
         periodoCampo.setValue(periodo);
+
+        var data = atendimento.getData();
+        dataCampo.setValue(data);
     }
 }

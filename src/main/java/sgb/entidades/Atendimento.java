@@ -1,5 +1,7 @@
 package sgb.entidades;
 
+import java.time.LocalDate;
+
 public class Atendimento {
     private int id;
     String nome;
@@ -9,7 +11,7 @@ public class Atendimento {
     String relacionado;
     Apoio atendente;
     boolean status;
-    String data;
+    LocalDate data;
     String anotacoes;
     String duracao;
 
@@ -18,11 +20,12 @@ public class Atendimento {
         this.nome = nome;
     }
 
-    public Atendimento(int id, String nome, String curso, int periodo) {
+    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data) {
         this.id = id;
         this.nome = nome;
         this.curso= curso;
         this.periodo = periodo;
+        this.data = data;
     }
 
     public Atendimento(int id, Pessoa pessoa, String relacionado, Apoio atendente, String data, String anotacoes, String duracao) {
@@ -118,11 +121,11 @@ public class Atendimento {
         }
     }
 
-    public String getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
