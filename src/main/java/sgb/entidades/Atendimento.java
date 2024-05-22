@@ -16,11 +16,6 @@ public class Atendimento {
     String anotacoes;
     String duracao;
 
-    public Atendimento(int id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-
     public Atendimento(int id, String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
         this.id = id;
         this.nome = nome;
