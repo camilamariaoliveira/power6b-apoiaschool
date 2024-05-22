@@ -19,6 +19,8 @@ public class AtendimentoHistoricoRota extends VerticalLayout {
         var grade = new Grid<Atendimento>(Atendimento.class, false);
         grade.addColumn("id").setHeader("Id");
         grade.addComponentColumn(this::edicaoAtendimento).setHeader("Nome");
+        grade.addComponentColumn(this::edicaoAtendimento).setHeader("Curso");
+        grade.addComponentColumn(this::edicaoAtendimento).setHeader("Período");
 
         grade.setItems(atendimentos);
         add(grade);

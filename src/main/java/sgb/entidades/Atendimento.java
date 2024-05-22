@@ -2,16 +2,9 @@ package sgb.entidades;
 
 public class Atendimento {
     private int id;
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     String nome;
+    String curso;
+    int periodo;
     Pessoa pessoa;
     String relacionado;
     Apoio atendente;
@@ -23,6 +16,13 @@ public class Atendimento {
     public Atendimento(int id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Atendimento(int id, String nome, String curso, int periodo) {
+        this.id = id;
+        this.nome = nome;
+        this.curso= curso;
+        this.periodo = periodo;
     }
 
     public Atendimento(int id, Pessoa pessoa, String relacionado, Apoio atendente, String data, String anotacoes, String duracao) {
@@ -38,6 +38,39 @@ public class Atendimento {
             throw new IllegalArgumentException("Id inválido.");
         }
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        if (nome == null) {
+            throw new IllegalArgumentException("Nome inválido");
+        }
+        this.nome = nome;
+    }
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public void setCurso(String curso) {
+        if (curso == null) {
+            throw new IllegalArgumentException("Curso inválido");
+        }
+        this.curso = curso;
+    }
+
+    public int getPeriodo() {
+        return periodo;
+    }
+
+    public void setPeriodo(int periodo) {
+        if (periodo < 0 || periodo > 12) {
+            throw new IllegalArgumentException("Período inválido");
+        }
+        this.periodo = periodo;
     }
 
     public Pessoa getPessoa() {
