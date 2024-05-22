@@ -40,7 +40,6 @@ public class AtendimentoFormulario extends FormLayout {
         linha1.add(nomeCampo);
         linha2.add(cursoCampo);
         linha2.add(periodoCampo);
-        linha2.setAlignItems(FlexComponent.Alignment.CENTER);
         container.add(linha1);
         container.add(linha2);
         add(container);
@@ -51,13 +50,19 @@ public class AtendimentoFormulario extends FormLayout {
         var id = Integer.parseInt(idString);
 
         var nome = nomeCampo.getValue();
+        var curso = cursoCampo.getValue();
+        var periodo = periodoCampo.getValue();
 
-        return new Atendimento(id, nome);
+        return new Atendimento(id, nome, curso, periodo);
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
         var nome = nomeCampo.getValue();
+        var curso = cursoCampo.getValue();
+        var periodo = periodoCampo.getValue();
         atendimento.setNome(nome);
+        atendimento.setCurso(curso);
+        atendimento.setPeriodo(periodo);
     }
 
     public void preencherCampos(Atendimento atendimento) {
@@ -67,5 +72,11 @@ public class AtendimentoFormulario extends FormLayout {
 
         var nome = atendimento.getNome();
         nomeCampo.setValue(nome);
+
+        var curso = atendimento.getCurso();
+        cursoCampo.setValue(curso);
+
+        var periodo = atendimento.getPeriodo();
+        periodoCampo.setValue(periodo);
     }
 }
