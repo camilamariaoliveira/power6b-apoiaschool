@@ -8,6 +8,7 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.richtexteditor.RichTextEditor;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -24,7 +25,7 @@ public class AtendimentoFormulario extends FormLayout {
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
     private DatePicker dataCampo;
-    private TextField apoioCampo;
+    private Select<String> apoioCampo;
     private TextArea anotacoesCampo;
     private Button saveButton;
     private VerticalLayout container;
@@ -49,7 +50,9 @@ public class AtendimentoFormulario extends FormLayout {
         periodoCampo.setMax(12);
         periodoCampo.setMin(1);
 
-        apoioCampo = new TextField("Último Atendente: ");
+        apoioCampo = new Select<>();
+        apoioCampo.setLabel("Último Atendente: ");
+        apoioCampo.setItems("Ana Catharina Carvalho","Kleyton Silva","Giovana Barros");
 
         anotacoesCampo = new TextArea("Anotações: ");
         anotacoesCampo.setWidth("610px");
