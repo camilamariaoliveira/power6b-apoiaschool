@@ -9,31 +9,41 @@ import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
+import sgb.entidades.Atendimento;
 import sgb.negocio.AtendimentoServico;
 
 @Route("/atendimento/criacao")
 public class AtendimentoCriacaoRota extends VerticalLayout {
+    @Autowired
     private AtendimentoServico servico;
     private AtendimentoFormulario formulario;
 
-    public AtendimentoCriacaoRota(AtendimentoServico servico) {
-        this.servico = servico;
+    public AtendimentoCriacaoRota() {
 
         formulario = new AtendimentoFormulario();
+        System.out.println(formulario);
+        System.out.println(this);
         add(formulario);
+        formulario.addSaveListener(event -> {
+            System.out.println("Passou");
+            System.out.println(servico);
+            Atendimento atendimento = formulario.criarAtendimento();
+            servico.criarAtendimento(atendimento);
+        });
 
-        var salvarBotao = new Button("Salvar");
-        salvarBotao.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        salvarBotao.addClickListener(this::salvar);
-
-        var cancelarBotao = new Button("Cancelar");
-        cancelarBotao.addClickListener(this::cancelar);
-
-        var botoes = new HorizontalLayout();
-        botoes.add(salvarBotao);
-        botoes.add(cancelarBotao);
-
-        add(botoes);
+//        var salvarBotao = new Button("Salvar");
+//        salvarBotao.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+//        salvarBotao.addClickListener(this::salvar);
+//
+//        var cancelarBotao = new Button("Cancelar");
+//        cancelarBotao.addClickListener(this::cancelar);
+//
+//        var botoes = new HorizontalLayout();
+//        botoes.add(salvarBotao);
+//        botoes.add(cancelarBotao);
+//
+//        add(botoes);
     }
 
     private void salvar(ClickEvent<Button> evento) {

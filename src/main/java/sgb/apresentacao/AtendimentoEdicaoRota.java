@@ -10,39 +10,41 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Atendimento;
 import sgb.negocio.AtendimentoServico;
 
+import java.util.UUID;
+
 @Route("/atendimento/edicao")
-public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParameter<Integer> {
+public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParameter<UUID> {
+    @Autowired
     private AtendimentoServico servico;
+    @Autowired
     private AtendimentoFormulario formulario;
     private Atendimento atendimento;
 
-    public AtendimentoEdicaoRota(AtendimentoServico servico) {
-        this.servico = servico;
-
+    public AtendimentoEdicaoRota() {
         formulario = new AtendimentoFormulario();
-        add(formulario);
-
-        var salvarBotao = new Button("Salvar");
-        salvarBotao.addClickListener(this::salvar);
-
-        var excluirBotao = new Button("Excluir");
-        excluirBotao.addClickListener(this::excluir);
-
-        var botoes = new HorizontalLayout();
-        botoes.add(salvarBotao);
-        botoes.add(excluirBotao);
-
-        add(botoes);
-    }
-
-    @Override
-    public void setParameter(BeforeEvent event, Integer parameter) {
-        atendimento = servico.obter(parameter);
         formulario.preencherCampos(atendimento);
+        add(formulario);
+        formulario.addSaveListener(event -> {
+            Atendimento atendimento = formulario.criarAtendimento();
+            servico.criarAtendimento(atendimento);
+        });
+//        var salvarBotao = new Button("Salvar");
+//        salvarBotao.addClickListener(this::salvar);
+//
+//        var excluirBotao = new Button("Excluir");
+//        excluirBotao.addClickListener(this::excluir);
+//
+//        var botoes = new HorizontalLayout();
+//        botoes.add(salvarBotao);
+//        botoes.add(excluirBotao);
+//
+//        add(botoes);
     }
+
 
     private void salvar(ClickEvent<Button> evento) {
         try {
@@ -80,4 +82,15 @@ public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParam
         dialogo.setConfirmText("Fechar");
         dialogo.open();
     }
+
+    @Override
+    public void setParameter(BeforeEvent event, UUID parameter) {
+
+    }
+
+    //@Override
+//    public void setParameter(BeforeEvent event, UUID parameter) {
+//            atendimento = servico.obter(parameter);
+//            formulario.preencherCampos(atendimento);
+//    }
 }

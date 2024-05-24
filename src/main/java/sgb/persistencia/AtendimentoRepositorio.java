@@ -5,6 +5,7 @@ import sgb.entidades.Atendimento;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class AtendimentoRepositorio {
@@ -13,37 +14,36 @@ public class AtendimentoRepositorio {
     public AtendimentoRepositorio() {atendimentos = new ArrayList<>();
     }
 
-    public void salvar(Atendimento atendimento) {
-        if (atendimento == null) {
-            throw new IllegalArgumentException();
-        }
+    public Atendimento salvar(Atendimento atendimento) {
         atendimentos.add(atendimento);
+        return atendimento;
     }
 
     public void excluir(int id) {
         var i = atendimentos.iterator();
-        while (i.hasNext()) {
-            var atendimento = i.next();
-            if (atendimento.getId() == id) {
-                i.remove();
-                break;
-            }
-        }
+//        while (i.hasNext()) {
+//            var atendimento = i.next();
+//            if (atendimento.getId() == id) {
+//                i.remove();
+//                break;
+//            }
+//        }
     }
 
     public List<Atendimento> pesquisar() {
-        var copia = new ArrayList<Atendimento>();
-        copia.addAll(atendimentos);
-        //copia.sort();
-        return copia;
+        return new ArrayList<>(atendimentos);
     }
 
-    public Atendimento obter(int id) {
+    public Atendimento obter(UUID id) {
         for (var atendimento : atendimentos) {
             if (atendimento.getId() == id) {
                 return atendimento;
             }
         }
         return null;
+    }
+
+    public List<Atendimento> findAll() {
+        return new ArrayList<>(atendimentos);
     }
 }

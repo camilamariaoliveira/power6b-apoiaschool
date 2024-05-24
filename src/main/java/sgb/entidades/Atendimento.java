@@ -1,23 +1,23 @@
 package sgb.entidades;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public class Atendimento {
-    private int id;
-    String nome;
-    String curso;
-    int periodo;
-    Pessoa pessoa;
-    String relacionado;
-    Apoio atendente;
-    String psicologo;
-    boolean status;
-    LocalDate data;
-    String anotacoes;
-    String duracao;
+    private UUID id;
+    private String nome;
+    private String curso;
+    private int periodo;
+    private Pessoa pessoa;
+    private String relacionado;
+    private String psicologo;
+    private boolean status;
+    private LocalDate data;
+    private String anotacoes;
+    private String duracao;
 
-    public Atendimento(int id, String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
-        this.id = id;
+    public Atendimento(String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
+        this.id = UUID.randomUUID();
         this.nome = nome;
         this.curso= curso;
         this.periodo = periodo;
@@ -26,19 +26,13 @@ public class Atendimento {
         this.anotacoes = anotacoes;
     }
 
-    public Atendimento(int id, Pessoa pessoa, String relacionado, Apoio atendente, String data, String anotacoes, String duracao) {
-        this.status = false;
-    }
-
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
-        if (id <= 0){
-            throw new IllegalArgumentException("Id inválido.");
-        }
+    public UUID setId(UUID id) {
         this.id = id;
+        return id;
     }
 
     public String getNome() {
@@ -105,17 +99,6 @@ public class Atendimento {
             throw new IllegalArgumentException("Psicológo inválido");
         }
         this.psicologo = psicologo;
-    }
-
-    public Apoio getAtendente() {
-        return atendente;
-    }
-
-    public void setAtendente(Apoio atendente) {
-        if (atendente == null) {
-            throw new IllegalArgumentException();
-        }
-        this.atendente = atendente;
     }
 
     public boolean isStatus() {

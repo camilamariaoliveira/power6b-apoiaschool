@@ -1,5 +1,9 @@
 package sgb.apresentacao;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -8,22 +12,25 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.shared.Registration;
+import org.springframework.stereotype.Component;
 import sgb.entidades.Atendimento;
 
+import java.util.UUID;
+
+@Component
 public class AtendimentoFormulario extends FormLayout {
-    private TextField idCampo;
     private TextField nomeCampo;
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
     private DatePicker dataCampo;
     private TextField apoioCampo;
     private TextArea anotacoesCampo;
-
+    private Button saveButton;
+    private VerticalLayout container;
 
     public AtendimentoFormulario() {
-        var container = new VerticalLayout();
-
-        idCampo = new TextField("Id: ");
+        container = new VerticalLayout();
 
         nomeCampo = new TextField("Nome: ");
 
@@ -47,27 +54,30 @@ public class AtendimentoFormulario extends FormLayout {
         anotacoesCampo = new TextArea("Anotações: ");
         anotacoesCampo.setWidth("610px");
 
+        saveButton = new Button("Salvar");
+
+        saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
 
         var linha1 = new HorizontalLayout();
         var linha2 = new HorizontalLayout();
         var linha3 = new HorizontalLayout();
-        linha1.add(idCampo);
+        var linha4 = new HorizontalLayout();
         linha1.add(nomeCampo);
         linha1.add(dataCampo);
         linha2.add(cursoCampo);
         linha2.add(periodoCampo);
         linha2.add(apoioCampo);
         linha3.add(anotacoesCampo);
+        linha4.add(saveButton);
         container.add(linha1);
         container.add(linha2);
         container.add(linha3);
+        container.add(linha4);
         add(container);
     }
 
     public Atendimento criarAtendimento() {
-        var idString = idCampo.getValue();
-        var id = Integer.parseInt(idString);
-
         var nome = nomeCampo.getValue();
         var curso = cursoCampo.getValue();
         var periodo = periodoCampo.getValue();
@@ -75,7 +85,7 @@ public class AtendimentoFormulario extends FormLayout {
         var apoio = apoioCampo.getValue();
         var anotacoes = anotacoesCampo.getValue();
 
-        return new Atendimento(id, nome, curso, periodo, data, apoio, anotacoes);
+        return new Atendimento(nome, curso, periodo, data, apoio, anotacoes);
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
@@ -85,6 +95,8 @@ public class AtendimentoFormulario extends FormLayout {
         var data = dataCampo.getValue();
         var apoio = apoioCampo.getValue();
         var anotacoes = anotacoesCampo.getValue();
+        var id = atendimento.getId();
+        atendimento.setId(id);
         atendimento.setNome(nome);
         atendimento.setCurso(curso);
         atendimento.setPeriodo(periodo);
@@ -94,9 +106,6 @@ public class AtendimentoFormulario extends FormLayout {
     }
 
     public void preencherCampos(Atendimento atendimento) {
-        var id = atendimento.getId();
-        var idString = String.valueOf(id);
-        idCampo.setValue(idString);
 
         var nome = atendimento.getNome();
         nomeCampo.setValue(nome);
@@ -115,5 +124,9 @@ public class AtendimentoFormulario extends FormLayout {
 
         var anotacoes = atendimento.getAnotacoes();
         anotacoesCampo.setValue(anotacoes);
+    }
+
+    public Registration addSaveListener(ComponentEventListener<ClickEvent<Button>> listener) {
+        return saveButton.addClickListener(listener);
     }
 }
