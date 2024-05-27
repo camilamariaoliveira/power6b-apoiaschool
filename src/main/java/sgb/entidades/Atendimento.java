@@ -8,13 +8,9 @@ public class Atendimento {
     private String nome;
     private String curso;
     private int periodo;
-    private Pessoa pessoa;
-    private String relacionado;
     private String psicologo;
-    private boolean status;
     private LocalDate data;
     private String anotacoes;
-    private String duracao;
 
     public Atendimento(String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
         this.id = UUID.randomUUID();
@@ -68,28 +64,6 @@ public class Atendimento {
         this.periodo = periodo;
     }
 
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public void setPessoa(Pessoa pessoa) {
-        if (pessoa == null) {
-            throw new IllegalArgumentException();
-        }
-        this.pessoa = pessoa;
-    }
-
-    public String getRelacionado() {
-        return relacionado;
-    }
-
-    public void setRelacionado(String relacionado) {
-        if (relacionado == null) {
-            throw new IllegalArgumentException();
-        }
-        this.relacionado = relacionado;
-    }
-
     public String getPsicologo() {
         return psicologo;
     }
@@ -99,18 +73,6 @@ public class Atendimento {
             throw new IllegalArgumentException("Psicológo inválido");
         }
         this.psicologo = psicologo;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus() {
-        if (!isStatus()){
-            this.status = true;
-        } else if (isStatus()) {
-            this.status = false;
-        }
     }
 
     public LocalDate getData() {
@@ -127,13 +89,5 @@ public class Atendimento {
 
     public void setAnotacoes(String anotacoes) {
         this.anotacoes = anotacoes;
-    }
-
-    public String getDuracao() {
-        return duracao;
-    }
-
-    public void setDuracao(String duracao) {
-        this.duracao = duracao;
     }
 }
