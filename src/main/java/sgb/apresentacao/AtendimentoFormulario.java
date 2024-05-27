@@ -8,7 +8,6 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.richtexteditor.RichTextEditor;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -17,10 +16,9 @@ import com.vaadin.flow.shared.Registration;
 import org.springframework.stereotype.Component;
 import sgb.entidades.Atendimento;
 
-import java.util.UUID;
-
 @Component
 public class AtendimentoFormulario extends FormLayout {
+    private TextField idCampo;
     private TextField nomeCampo;
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
@@ -32,6 +30,9 @@ public class AtendimentoFormulario extends FormLayout {
 
     public AtendimentoFormulario() {
         container = new VerticalLayout();
+
+        idCampo = new TextField("Id: ");
+        idCampo.setEnabled(false);
 
         nomeCampo = new TextField("Nome: ");
 
@@ -61,11 +62,11 @@ public class AtendimentoFormulario extends FormLayout {
 
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-
         var linha1 = new HorizontalLayout();
         var linha2 = new HorizontalLayout();
         var linha3 = new HorizontalLayout();
         var linha4 = new HorizontalLayout();
+        linha1.add(idCampo);
         linha1.add(nomeCampo);
         linha1.add(dataCampo);
         linha2.add(cursoCampo);
@@ -92,41 +93,22 @@ public class AtendimentoFormulario extends FormLayout {
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
-        var nome = nomeCampo.getValue();
-        var curso = cursoCampo.getValue();
-        var periodo = periodoCampo.getValue();
-        var data = dataCampo.getValue();
-        var apoio = apoioCampo.getValue();
-        var anotacoes = anotacoesCampo.getValue();
-        var id = atendimento.getId();
-        atendimento.setId(id);
-        atendimento.setNome(nome);
-        atendimento.setCurso(curso);
-        atendimento.setPeriodo(periodo);
-        atendimento.setData(data);
-        atendimento.setPsicologo(apoio);
-        atendimento.setAnotacoes(anotacoes);
+        atendimento.setNome(nomeCampo.getValue());
+        atendimento.setCurso(cursoCampo.getValue());
+        atendimento.setPeriodo(periodoCampo.getValue());
+        atendimento.setData(dataCampo.getValue());
+        atendimento.setPsicologo(apoioCampo.getValue());
+        atendimento.setAnotacoes(anotacoesCampo.getValue());
     }
 
     public void preencherCampos(Atendimento atendimento) {
-
-        var nome = atendimento.getNome();
-        nomeCampo.setValue(nome);
-
-        var curso = atendimento.getCurso();
-        cursoCampo.setValue(curso);
-
-        var periodo = atendimento.getPeriodo();
-        periodoCampo.setValue(periodo);
-
-        var data = atendimento.getData();
-        dataCampo.setValue(data);
-
-        var apoio = atendimento.getPsicologo();
-        apoioCampo.setValue(apoio);
-
-        var anotacoes = atendimento.getAnotacoes();
-        anotacoesCampo.setValue(anotacoes);
+        idCampo.setValue(String.valueOf(atendimento.getId()));
+        nomeCampo.setValue(atendimento.getNome());
+        cursoCampo.setValue(atendimento.getCurso());
+        periodoCampo.setValue(atendimento.getPeriodo());
+        dataCampo.setValue(atendimento.getData());
+        apoioCampo.setValue(atendimento.getPsicologo());
+        anotacoesCampo.setValue(atendimento.getAnotacoes());
     }
 
     public Registration addSaveListener(ComponentEventListener<ClickEvent<Button>> listener) {
