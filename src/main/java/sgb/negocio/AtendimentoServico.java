@@ -3,40 +3,19 @@ package sgb.negocio;
 import org.springframework.stereotype.Service;
 import sgb.entidades.Atendimento;
 import sgb.persistencia.AtendimentoRepositorio;
-
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class AtendimentoServico {
-    private AtendimentoRepositorio repositorio;
+    private final AtendimentoRepositorio repositorio;
 
     public AtendimentoServico(AtendimentoRepositorio repositorio) {
         if (repositorio == null) {
             throw new IllegalArgumentException();
         }
         this.repositorio = repositorio;
-    }
-
-    public void salvar(Atendimento atendimento) {
-        if (atendimento == null) {
-            throw new IllegalArgumentException();
-        }
-        //repositorio.excluir(atendimento.getId());
-        repositorio.salvar(atendimento);
-    }
-
-
-    public List<Atendimento> pesquisar() {
-        return repositorio.pesquisar();
-    }
-
-    public Atendimento obter(UUID id) {
-        return repositorio.obter(id);
-    }
-
-    public Atendimento excluir(UUID id) {
-        return repositorio.obter(id);
     }
 
     public Atendimento criarAtendimento(Atendimento atendimento) {
@@ -46,5 +25,26 @@ public class AtendimentoServico {
 
     public List<Atendimento> listarAtendimentos() {
         return repositorio.findAll();
+    }
+
+    public Atendimento buscarAtendimentoPorId(UUID id) {
+        return repositorio.findById(id);
+    }
+
+    public void atualizarAtendimento(Atendimento atendimentoAtualizado) {
+        Optional<Atendimento> optionalAtendimentoExistente = Optional.ofNullable(repositorio.findById(atendimentoAtualizado.getId()));
+
+        if (optionalAtendimentoExistente.isPresent()) {
+            Atendimento atendimentoExistente = optionalAtendimentoExistente.get();
+            atendimentoExistente.setNome(atendimentoAtualizado.getNome());
+            atendimentoExistente.setCurso(atendimentoAtualizado.getCurso());
+            atendimentoExistente.setPeriodo(atendimentoAtualizado.getPeriodo());
+            atendimentoExistente.setData(atendimentoAtualizado.getData());
+            atendimentoExistente.setPsicologo(atendimentoAtualizado.getPsicologo());
+            atendimentoExistente.setAnotacoes(atendimentoAtualizado.getAnotacoes());
+
+        } else {
+            throw new RuntimeException("Atendimento não encontrado");
+        }
     }
 }
