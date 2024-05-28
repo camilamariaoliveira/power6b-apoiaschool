@@ -4,6 +4,8 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
+import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -12,12 +14,21 @@ import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.shared.Registration;
 import org.springframework.stereotype.Component;
 import sgb.entidades.Atendimento;
+import sgb.entidades.Marcador;
+import sgb.negocio.MarcadorServico;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class AtendimentoFormulario extends FormLayout {
+
     private TextField idCampo;
     private TextField nomeCampo;
     private Select<String> cursoCampo;
@@ -27,8 +38,23 @@ public class AtendimentoFormulario extends FormLayout {
     private TextArea anotacoesCampo;
     private Button saveButton;
     private VerticalLayout container;
+    private CheckboxGroup marcadoresSelecao;
+    private MarcadorServico marcadorServico;
+
+    public AtendimentoFormulario(MarcadorServico marcadorServico) {
+        this.marcadorServico = marcadorServico;
+        initializeForm();
+        addMarcadores();
+    }
 
     public AtendimentoFormulario() {
+        initializeForm();
+        marcadoresSelecao.setEnabled(false);
+        Label labelSemMarcadores = new Label("Nenhum marcador disponível");
+        container.add(labelSemMarcadores);
+    }
+
+    private void initializeForm() {
         container = new VerticalLayout();
 
         idCampo = new TextField("Id: ");
@@ -58,27 +84,38 @@ public class AtendimentoFormulario extends FormLayout {
         anotacoesCampo = new TextArea("Anotações: ");
         anotacoesCampo.setWidth("610px");
 
-        saveButton = new Button("Salvar");
+        marcadoresSelecao = new CheckboxGroup<>();
+        marcadoresSelecao.setLabel("Marcadores");
+        marcadoresSelecao.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
+        saveButton = new Button("Salvar");
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        var linha1 = new HorizontalLayout();
-        var linha2 = new HorizontalLayout();
-        var linha3 = new HorizontalLayout();
-        var linha4 = new HorizontalLayout();
-        linha1.add(idCampo);
-        linha1.add(nomeCampo);
-        linha1.add(dataCampo);
-        linha2.add(cursoCampo);
-        linha2.add(periodoCampo);
-        linha2.add(apoioCampo);
-        linha3.add(anotacoesCampo);
-        linha4.add(saveButton);
-        container.add(linha1);
-        container.add(linha2);
-        container.add(linha3);
-        container.add(linha4);
+        var linha1 = new HorizontalLayout(idCampo,nomeCampo,dataCampo);
+        var linha2 = new HorizontalLayout(cursoCampo,periodoCampo,apoioCampo);
+        var linha3 = new HorizontalLayout(anotacoesCampo);
+        var linha4 = new HorizontalLayout(marcadoresSelecao);
+        var linha5 = new HorizontalLayout(saveButton);
+
+        container.add(linha1, linha2, linha3, linha4, linha5);
+
         add(container);
+    }
+
+    private void addMarcadores() {
+        if (marcadorServico != null) {
+            List<Marcador> marcadores = marcadorServico.listar();
+            if (!marcadores.isEmpty()) {
+                List<String> nomesMarcadores = marcadores.stream()
+                        .map(Marcador::getNome)
+                        .collect(Collectors.toList());
+                marcadoresSelecao.setItems(nomesMarcadores);
+            } else {
+                marcadoresSelecao.setEnabled(false);
+                Label labelSemMarcadores = new Label("Nenhum marcador disponível");
+                container.add(labelSemMarcadores);
+            }
+        }
     }
 
     public Atendimento criarAtendimento() {
@@ -89,7 +126,20 @@ public class AtendimentoFormulario extends FormLayout {
         var apoio = apoioCampo.getValue();
         var anotacoes = anotacoesCampo.getValue();
 
-        return new Atendimento(nome, curso, periodo, data, apoio, anotacoes);
+        Atendimento atendimento = new Atendimento(nome, curso, periodo, data, apoio, anotacoes);
+
+        if (marcadorServico != null) {
+            Set<String> nomesMarcadoresSelecionados = marcadoresSelecao.getSelectedItems();
+            for (String nomeMarcador : nomesMarcadoresSelecionados) {
+                List<Marcador> marcadores = marcadorServico.listar();
+                Optional<Marcador> marcadorOptional = marcadores.stream()
+                        .filter(marcador -> marcador.getNome().equals(nomeMarcador))
+                        .findFirst();
+                marcadorOptional.ifPresent(atendimento::adicionarMarcador);
+            }
+        }
+
+        return atendimento;
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
@@ -99,6 +149,18 @@ public class AtendimentoFormulario extends FormLayout {
         atendimento.setData(dataCampo.getValue());
         atendimento.setPsicologo(apoioCampo.getValue());
         atendimento.setAnotacoes(anotacoesCampo.getValue());
+        atendimento.getMarcadores().clear();
+
+        if (marcadorServico != null) {
+            Set<String> nomesMarcadoresSelecionados = marcadoresSelecao.getSelectedItems();
+            for (String nomeMarcador : nomesMarcadoresSelecionados) {
+                List<Marcador> marcadores = marcadorServico.listar();
+                Optional<Marcador> marcadorOptional = marcadores.stream()
+                        .filter(marcador -> marcador.getNome().equals(nomeMarcador))
+                        .findFirst();
+                marcadorOptional.ifPresent(atendimento::adicionarMarcador);
+            }
+        }
     }
 
     public void preencherCampos(Atendimento atendimento) {
@@ -109,6 +171,12 @@ public class AtendimentoFormulario extends FormLayout {
         dataCampo.setValue(atendimento.getData());
         apoioCampo.setValue(atendimento.getPsicologo());
         anotacoesCampo.setValue(atendimento.getAnotacoes());
+        if (marcadorServico != null) {
+            Set<String> nomesMarcadores = atendimento.getMarcadores().stream()
+                    .map(Marcador::getNome)
+                    .collect(Collectors.toSet());
+            marcadoresSelecao.setValue(nomesMarcadores);
+        }
     }
 
     public Registration addSaveListener(ComponentEventListener<ClickEvent<Button>> listener) {

@@ -20,10 +20,8 @@ public class MarcadorFormulario extends FormLayout {
         add(container);
     }
 
-
     public Marcador criarFormulario() {
         var nome = nomeCampo.getValue();
-
         return new Marcador(nome);
     }
 }

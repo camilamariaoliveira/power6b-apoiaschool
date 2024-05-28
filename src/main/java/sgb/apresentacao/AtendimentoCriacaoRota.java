@@ -7,16 +7,18 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Atendimento;
 import sgb.negocio.AtendimentoServico;
+import sgb.negocio.MarcadorServico;
 
 @Route("/atendimento/criacao")
 public class AtendimentoCriacaoRota extends VerticalLayout {
     @Autowired
     private AtendimentoServico servico;
     private AtendimentoFormulario formulario;
+    private MarcadorServico marcadorServico;
 
-    public AtendimentoCriacaoRota() {
+    public AtendimentoCriacaoRota(MarcadorServico marcadorServico) {
 
-        formulario = new AtendimentoFormulario();
+        formulario = new AtendimentoFormulario(marcadorServico);
         add(formulario);
 
         formulario.addSaveListener(event -> {

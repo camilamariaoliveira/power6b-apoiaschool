@@ -9,6 +9,8 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Atendimento;
 import sgb.negocio.AtendimentoServico;
+import sgb.negocio.MarcadorServico;
+
 import java.util.UUID;
 
 @Route("/atendimento/edicao")
@@ -17,10 +19,11 @@ public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParam
     private AtendimentoServico servico;
     private AtendimentoFormulario formulario;
     private Atendimento atendimento;
+    private MarcadorServico marcadorServico;
 
-    public AtendimentoEdicaoRota() {
+    public AtendimentoEdicaoRota(MarcadorServico marcadorServico) {
 
-        formulario = new AtendimentoFormulario();
+        formulario = new AtendimentoFormulario(marcadorServico);
 
         add(formulario);
 
@@ -46,5 +49,4 @@ public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParam
             Notification.show("Atendimento não encontrado!", 3000, Notification.Position.MIDDLE);
         }
     }
-
 }

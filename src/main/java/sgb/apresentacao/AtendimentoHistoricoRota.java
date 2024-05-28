@@ -6,11 +6,9 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Atendimento;
 import sgb.negocio.AtendimentoServico;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +28,7 @@ public class AtendimentoHistoricoRota extends VerticalLayout {
         add(titulo);
         filtroNome.setPlaceholder("Filtrar por nome...");
         filtroNome.addValueChangeListener(e -> atualizarLista());
-        grid.setColumns("nome", "curso", "data", "periodo");
+        grid.setColumns("nome", "curso", "data", "periodo", "marcadores");
         grid.addItemClickListener(event -> {
             Atendimento atendimentoSelecionado = event.getItem();
             if (atendimentoSelecionado != null) {
