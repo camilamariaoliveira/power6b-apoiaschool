@@ -5,12 +5,10 @@ import java.util.UUID;
 public class Marcador {
     private String nome;
     private UUID id;
-    private boolean status;
 
     public Marcador(String nome) {
         this.nome = nome;
         this.id = UUID.randomUUID();
-        this.status = false;
     }
 
     public String getNome() {
@@ -30,16 +28,8 @@ public class Marcador {
         return id;
     }
 
-    public boolean isStatus() {
-        return status;
+    @Override
+    public String toString() {
+        return this.nome;
     }
-
-    public void setStatus(boolean status) {
-        if (!status){
-            this.status = true;
-        } else if (status) {
-            this.status = false;
-        }
-    }
-
 }

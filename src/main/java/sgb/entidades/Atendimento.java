@@ -1,6 +1,8 @@
 package sgb.entidades;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Atendimento {
@@ -11,6 +13,7 @@ public class Atendimento {
     private String psicologo;
     private LocalDate data;
     private String anotacoes;
+    private List<Marcador> marcadores;
 
     public Atendimento(String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
         this.id = UUID.randomUUID();
@@ -20,6 +23,7 @@ public class Atendimento {
         this.data = data;
         this.psicologo = psicologo;
         this.anotacoes = anotacoes;
+        this.marcadores = new ArrayList<>();
     }
 
     public UUID getId() {
@@ -89,5 +93,21 @@ public class Atendimento {
 
     public void setAnotacoes(String anotacoes) {
         this.anotacoes = anotacoes;
+    }
+
+    public List<Marcador> getMarcadores() {
+        return marcadores;
+    }
+
+    public void adicionarMarcador(Marcador marcador) {
+        marcadores.add(marcador);
+    }
+
+    public void removerMarcador(Marcador marcador) {
+        marcadores.remove(marcador);
+    }
+
+    public String toString() {
+        return "Atendimento [ id="+ id + ", nome=" + nome + ", curso=" + curso + ", periodo= "+ periodo + ", psicologo= "+ psicologo + ", data= "+ data + ", anotacoes= "+ anotacoes + ", marcadores= "+ marcadores.stream().map(Marcador::getNome).toList() +"]";
     }
 }
