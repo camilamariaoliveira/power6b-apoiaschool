@@ -20,17 +20,6 @@ public class MarcadorRepositorio {
         marcadores.add(marcador);
     }
 
-    public void excluir(int id) {
-        var i = marcadores.iterator();
-//        while (i.hasNext()) {
-//            var marcador = i.next();
-//            if (marcador.getId() == id) {
-//                i.remove();
-//                break;
-//            }
-//        }
-    }
-
     public List<Marcador> listar() {
         var copia = new ArrayList<Marcador>();
         copia.addAll(marcadores);

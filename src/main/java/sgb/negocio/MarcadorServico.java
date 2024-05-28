@@ -20,9 +20,7 @@ public class MarcadorServico {
     public void salvar(Marcador marcador) {
         if (marcador == null) {
             throw new IllegalArgumentException();
-        }
-        //repositorio.excluir(marcador.getId());
-        repositorio.salvar(marcador);
+        }repositorio.salvar(marcador);
     }
 
 
