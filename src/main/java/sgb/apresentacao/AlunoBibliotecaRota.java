@@ -47,13 +47,8 @@ public class AlunoBibliotecaRota  extends VerticalLayout {
     }
 
     private void processExcelFile(InputStream inputStream, String fileName) throws IOException {
-        Workbook w = null;
-        if (fileName.endsWith(".xls") ){
-            w = new HSSFWorkbook(inputStream);
-        } else {
-            w = new XSSFWorkbook(inputStream);
-        }
-        Sheet sheet = w.iterator().next();
+        Workbook workbook = fileName.endsWith(".xls") ? new HSSFWorkbook(inputStream) : new XSSFWorkbook(inputStream);
+        Sheet sheet = workbook.iterator().next();
         alunos.clear(); // Limpa a lista de alunos antes de adicionar novos dados
         for (Row row : sheet) {
             if (row.getRowNum() == 0) {
@@ -67,7 +62,7 @@ public class AlunoBibliotecaRota  extends VerticalLayout {
             Aluno aluno = new Aluno(nome, curso, periodo, matricula);
             alunos.add(aluno);
         }
-        w.close();
+        workbook.close();
     }
 
     private void updateGrid() {grid.setItems(alunos);}
