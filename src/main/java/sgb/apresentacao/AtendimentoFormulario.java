@@ -16,6 +16,7 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.shared.Registration;
 import org.springframework.stereotype.Component;
 import sgb.entidades.Aluno;
@@ -24,17 +25,14 @@ import sgb.entidades.Marcador;
 import sgb.negocio.AlunoServico;
 import sgb.negocio.MarcadorServico;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
 public class AtendimentoFormulario extends FormLayout {
 
     private TextField idCampo;
-    private Select<String> listAluno;
+    private ComboBox<String> listAluno;
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
     private DatePicker dataCampo;
@@ -70,8 +68,17 @@ public class AtendimentoFormulario extends FormLayout {
         idCampo = new TextField("Id: ");
         idCampo.setEnabled(false);
 
-        listAluno = new Select<>();
+        listAluno = new ComboBox<>();
         listAluno.setLabel("Aluno: ");
+        listAluno.addValueChangeListener(e -> {
+            List<Aluno> alunos = alunoServico.listar();
+            if (!listAluno.getValue().isEmpty()) {
+                alunos = alunos.stream()
+                        .filter(aluno -> aluno.getNome().toLowerCase().contains(listAluno.getValue().toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+            listAluno.setItems((ComboBox.ItemFilter<String>) alunos);
+        });
 
         cursoCampo = new Select<>();
         cursoCampo.setLabel("Curso: ");

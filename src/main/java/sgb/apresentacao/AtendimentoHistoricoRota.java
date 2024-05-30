@@ -25,7 +25,6 @@ public class AtendimentoHistoricoRota extends VerticalLayout {
         this.filtroNome = new TextField();
         var titulo = new H1("Histórico");
 
-        add(titulo);
         filtroNome.setPlaceholder("Filtrar por nome...");
         filtroNome.addValueChangeListener(e -> atualizarLista());
         grid.setColumns("nome", "curso", "data", "periodo", "marcadores");
@@ -38,7 +37,7 @@ public class AtendimentoHistoricoRota extends VerticalLayout {
                 Notification.show("Nenhum atendimento selecionado");
             }
         });
-        add(filtroNome, grid);
+        add(titulo, filtroNome, grid);
         atualizarLista();
     }
 
