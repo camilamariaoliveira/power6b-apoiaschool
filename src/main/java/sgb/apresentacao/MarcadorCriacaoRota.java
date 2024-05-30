@@ -1,66 +1,33 @@
 package sgb.apresentacao;
 
-import com.vaadin.flow.component.ClickEvent;
-import com.vaadin.flow.component.Html;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import sgb.negocio.MarcadorServico;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.notification.Notification;
+import sgb.entidades.Marcador;
 
 @Route("/marcador/criacao")
 public class MarcadorCriacaoRota extends VerticalLayout {
     private MarcadorServico servico;
     private MarcadorFormulario formulario;
+    private Grid<Marcador> grid = new Grid<Marcador>(Marcador.class);
 
     public MarcadorCriacaoRota(MarcadorServico servico) {
         this.servico = servico;
 
         formulario = new MarcadorFormulario();
         add(formulario);
+        formulario.addSaveListener(event -> {
+            Marcador novoMarcador = formulario.criarMarcador();
+            servico.criarMarcador(novoMarcador);
+            Notification.show("Marcador salvo com sucesso");
+            updateGrid();
+        });
 
-        var salvarBotao = new Button("Salvar");
-        salvarBotao.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        salvarBotao.addClickListener(this::salvar);
-
-        var cancelarBotao = new Button("Cancelar");
-        cancelarBotao.addClickListener(this::cancelar);
-
-        var botoes = new HorizontalLayout();
-        botoes.add(salvarBotao);
-        botoes.add(cancelarBotao);
-
-        add(botoes);
+        grid.setItems(servico.listar());
+        add(grid);
     }
 
-    private void salvar(ClickEvent<Button> evento) {
-        try {
-            var marcador = formulario.criarFormulario();
-            servico.salvar(marcador);
-
-            var atualTela = UI.getCurrent();
-            atualTela.navigate(MarcadorListaRota.class);
-        }catch (RuntimeException excecao){
-            tratar(excecao);
-        }
-    }
-
-    private void cancelar(ClickEvent<Button> evento) {
-    }
-
-    private void tratar(RuntimeException excecao) {
-        var mensagem = excecao.getMessage();
-
-        var conteudo = "<ul><li>" + mensagem + "</li></ul>";
-        var html = new Html(conteudo);
-
-        var dialogo = new ConfirmDialog();
-        dialogo.setHeader("Erro");
-        dialogo.add(html);
-        dialogo.setConfirmText("Fechar");
-        dialogo.open();
-    }
+    private void updateGrid() {grid.setItems(servico.listar());}
 }

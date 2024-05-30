@@ -27,4 +27,7 @@ public class MarcadorServico {
     public List<Marcador> listar() {
         return repositorio.listar();
     }
+
+    public void criarMarcador(Marcador novoMarcador) {
+    }
 }
