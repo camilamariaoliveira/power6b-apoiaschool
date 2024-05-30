@@ -40,9 +40,9 @@ public class Atendimento {
     }
 
     public void setNome(String nome) {
-        if (nome == null) {
-            throw new IllegalArgumentException("Nome inválido");
-        }
+//        if (nome == null) {
+//            throw new IllegalArgumentException("Nome inválido");
+//        }
         this.nome = nome;
     }
 

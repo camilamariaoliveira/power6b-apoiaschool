@@ -6,6 +6,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Atendimento;
+import sgb.negocio.AlunoServico;
 import sgb.negocio.AtendimentoServico;
 import sgb.negocio.MarcadorServico;
 
@@ -15,10 +16,11 @@ public class AtendimentoCriacaoRota extends VerticalLayout {
     private AtendimentoServico servico;
     private AtendimentoFormulario formulario;
     private MarcadorServico marcadorServico;
+    private AlunoServico alunoServico;
 
-    public AtendimentoCriacaoRota(MarcadorServico marcadorServico) {
+    public AtendimentoCriacaoRota(MarcadorServico marcadorServico, AlunoServico alunoServico) {
 
-        formulario = new AtendimentoFormulario(marcadorServico);
+        formulario = new AtendimentoFormulario(marcadorServico, alunoServico);
         add(formulario);
 
         formulario.addSaveListener(event -> {
