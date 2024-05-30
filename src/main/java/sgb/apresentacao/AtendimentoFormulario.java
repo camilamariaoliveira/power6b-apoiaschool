@@ -17,8 +17,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.shared.Registration;
 import org.springframework.stereotype.Component;
+import sgb.entidades.Aluno;
 import sgb.entidades.Atendimento;
 import sgb.entidades.Marcador;
+import sgb.negocio.AlunoServico;
 import sgb.negocio.MarcadorServico;
 
 import java.util.List;
@@ -31,6 +33,7 @@ public class AtendimentoFormulario extends FormLayout {
 
     private TextField idCampo;
     private TextField nomeCampo;
+    private Select<String> listAluno;
     private Select<String> cursoCampo;
     private IntegerField periodoCampo;
     private DatePicker dataCampo;
@@ -40,11 +43,14 @@ public class AtendimentoFormulario extends FormLayout {
     private VerticalLayout container;
     private CheckboxGroup marcadoresSelecao;
     private MarcadorServico marcadorServico;
+    private AlunoServico alunoServico;
 
-    public AtendimentoFormulario(MarcadorServico marcadorServico) {
+    public AtendimentoFormulario(MarcadorServico marcadorServico, AlunoServico alunoServico) {
         this.marcadorServico = marcadorServico;
+        this.alunoServico = alunoServico;
         initializeForm();
         addMarcadores();
+        addAlunos();
     }
 
     public AtendimentoFormulario() {
@@ -60,7 +66,10 @@ public class AtendimentoFormulario extends FormLayout {
         idCampo = new TextField("Id: ");
         idCampo.setEnabled(false);
 
-        nomeCampo = new TextField("Nome: ");
+        //nomeCampo = new TextField("Nome: ");
+
+        listAluno = new Select<>();
+        listAluno.setLabel("Aluno: ");
 
         cursoCampo = new Select<>();
         cursoCampo.setLabel("Curso: ");
@@ -91,7 +100,7 @@ public class AtendimentoFormulario extends FormLayout {
         saveButton = new Button("Salvar");
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        var linha1 = new HorizontalLayout(idCampo,nomeCampo,dataCampo);
+        var linha1 = new HorizontalLayout(idCampo,listAluno,dataCampo);
         var linha2 = new HorizontalLayout(cursoCampo,periodoCampo,apoioCampo);
         var linha3 = new HorizontalLayout(anotacoesCampo);
         var linha4 = new HorizontalLayout(marcadoresSelecao);
@@ -118,15 +127,32 @@ public class AtendimentoFormulario extends FormLayout {
         }
     }
 
+    private void addAlunos() {
+        if (alunoServico != null) {
+            List<Aluno> alunos = alunoServico.listar();
+            if (!alunos.isEmpty()) {
+                List<String> nomesAluno = alunos.stream()
+                        .map(Aluno::getNome)
+                        .collect(Collectors.toList());
+                listAluno.setItems(nomesAluno);
+            } else {
+                listAluno.setEnabled(false);
+                Label labelSemBiblioteca = new Label("Sem biblioteca de alunos disponível");
+                container.add(labelSemBiblioteca);
+            }
+        }
+    }
+
     public Atendimento criarAtendimento() {
-        var nome = nomeCampo.getValue();
+        //var nome = nomeCampo.getValue();
+        var alunoSelecionado = listAluno.getValue();
         var curso = cursoCampo.getValue();
         var periodo = periodoCampo.getValue();
         var data = dataCampo.getValue();
         var apoio = apoioCampo.getValue();
         var anotacoes = anotacoesCampo.getValue();
 
-        Atendimento atendimento = new Atendimento(nome, curso, periodo, data, apoio, anotacoes);
+        Atendimento atendimento = new Atendimento(alunoSelecionado, curso, periodo, data, apoio, anotacoes);
 
         if (marcadorServico != null) {
             Set<String> nomesMarcadoresSelecionados = marcadoresSelecao.getSelectedItems();
@@ -143,7 +169,7 @@ public class AtendimentoFormulario extends FormLayout {
     }
 
     public void preencherAtendimento(Atendimento atendimento) {
-        atendimento.setNome(nomeCampo.getValue());
+        atendimento.setNome(listAluno.getValue());
         atendimento.setCurso(cursoCampo.getValue());
         atendimento.setPeriodo(periodoCampo.getValue());
         atendimento.setData(dataCampo.getValue());
@@ -165,7 +191,8 @@ public class AtendimentoFormulario extends FormLayout {
 
     public void preencherCampos(Atendimento atendimento) {
         idCampo.setValue(String.valueOf(atendimento.getId()));
-        nomeCampo.setValue(atendimento.getNome());
+        //nomeCampo.setValue(atendimento.getNome());
+        listAluno.setValue(atendimento.getNome());
         cursoCampo.setValue(atendimento.getCurso());
         periodoCampo.setValue(atendimento.getPeriodo());
         dataCampo.setValue(atendimento.getData());

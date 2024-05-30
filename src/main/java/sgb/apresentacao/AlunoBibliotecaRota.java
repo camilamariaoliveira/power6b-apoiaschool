@@ -11,7 +11,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Aluno;
+import sgb.negocio.AlunoServico;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -20,10 +23,15 @@ import java.util.List;
 @Route("aluno/biblioteca")
 public class AlunoBibliotecaRota  extends VerticalLayout {
 
-    private List<Aluno> alunos = new ArrayList<>();
+    private AlunoServico servico;
+    private List<Aluno> alunos ;
     private Grid<Aluno> grid = new Grid<>(Aluno.class);
 
-    public AlunoBibliotecaRota() {
+    @Autowired
+    public AlunoBibliotecaRota(AlunoServico servico) {
+        this.servico = servico;
+        this.alunos = new ArrayList<>();
+
         MemoryBuffer memoryBuffer = new MemoryBuffer();
 
         Upload upload = new Upload(memoryBuffer);
@@ -36,13 +44,13 @@ public class AlunoBibliotecaRota  extends VerticalLayout {
             try {
                 processExcelFile(inputStream, fileName);
                 Notification.show("Arquivo " + fileName + " carregado com sucesso!");
+                servico.salvarTodos(alunos);
                 updateGrid(); // Atualiza o Grid após carregar os dados
             } catch (IOException e) {
                 Notification.show("Erro ao processar o arquivo: " + e.getMessage(), 5000, Notification.Position.MIDDLE);
             }
         });
         grid.setColumns("nome", "curso", "periodo", "matricula");
-
         add(upload, grid);
     }
 
@@ -65,5 +73,5 @@ public class AlunoBibliotecaRota  extends VerticalLayout {
         workbook.close();
     }
 
-    private void updateGrid() {grid.setItems(alunos);}
+    private void updateGrid() {grid.setItems(servico.listar());}
 }

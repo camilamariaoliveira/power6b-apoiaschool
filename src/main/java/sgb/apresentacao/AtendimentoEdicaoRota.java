@@ -8,6 +8,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import sgb.entidades.Atendimento;
+import sgb.negocio.AlunoServico;
 import sgb.negocio.AtendimentoServico;
 import sgb.negocio.MarcadorServico;
 
@@ -20,10 +21,11 @@ public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParam
     private AtendimentoFormulario formulario;
     private Atendimento atendimento;
     private MarcadorServico marcadorServico;
+    private AlunoServico alunoServico;
 
-    public AtendimentoEdicaoRota(MarcadorServico marcadorServico) {
+    public AtendimentoEdicaoRota(MarcadorServico marcadorServico, AlunoServico alunoServico ) {
 
-        formulario = new AtendimentoFormulario(marcadorServico);
+        formulario = new AtendimentoFormulario(marcadorServico, alunoServico);
 
         add(formulario);
 
