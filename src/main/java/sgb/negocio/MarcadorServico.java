@@ -5,6 +5,7 @@ import sgb.entidades.Marcador;
 import sgb.persistencia.MarcadorRepositorio;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MarcadorServico {
@@ -29,5 +30,7 @@ public class MarcadorServico {
     }
 
     public void criarMarcador(Marcador novoMarcador) {
+        novoMarcador.setId(UUID.randomUUID());
+        repositorio.salvar(novoMarcador);
     }
 }
