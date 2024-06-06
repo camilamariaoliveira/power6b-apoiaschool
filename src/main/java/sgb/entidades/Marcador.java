@@ -29,7 +29,5 @@ public class Marcador {
     }
 
     @Override
-    public String toString() {
-        return this.nome;
-    }
+    public String toString() {return this.nome;}
 }

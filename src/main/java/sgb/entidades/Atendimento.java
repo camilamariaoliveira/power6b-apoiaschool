@@ -7,48 +7,47 @@ import java.util.UUID;
 
 public class Atendimento {
     private UUID id;
-    private String nome;
+    private Aluno aluno;
     private String curso;
     private int periodo;
+    private int contatoAluno;
+    private int contatoRelacionado;
+    private String laudo;
     private String psicologo;
     private LocalDate data;
     private String anotacoes;
     private List<Marcador> marcadores;
 
-    public Atendimento(String nome, String curso, int periodo, LocalDate data, String psicologo, String anotacoes) {
+    public Atendimento(Aluno aluno, LocalDate data, String psicologo, String anotacoes) {
         this.id = UUID.randomUUID();
-        this.nome = nome;
-        this.curso= curso;
-        this.periodo = periodo;
+        this.aluno = aluno;
+        this.curso= aluno.getCurso();
+        this.periodo = aluno.getPeriodo();
         this.data = data;
         this.psicologo = psicologo;
         this.anotacoes = anotacoes;
         this.marcadores = new ArrayList<>();
     }
 
-    public UUID getId() {
-        return id;
-    }
+    public UUID getId() { return id; }
 
     public UUID setId(UUID id) {
         this.id = id;
         return id;
     }
 
-    public String getNome() {
-        return nome;
+    public Aluno getAluno() { return aluno; }
+
+    public void setAluno(Aluno aluno) {
+        if (aluno == null) {
+            throw new IllegalArgumentException("Aluno inválido");
+        }
+        this.aluno = aluno;
+        this.curso = aluno.getCurso();  // Atualizando o curso com base no aluno
+        this.periodo = aluno.getPeriodo();  // Atualizando o período com base no aluno
     }
 
-    public void setNome(String nome) {
-//        if (nome == null) {
-//            throw new IllegalArgumentException("Nome inválido");
-//        }
-        this.nome = nome;
-    }
-
-    public String getCurso() {
-        return curso;
-    }
+    public String getCurso() { return curso; }
 
     public void setCurso(String curso) {
         if (curso == null) {
@@ -57,9 +56,7 @@ public class Atendimento {
         this.curso = curso;
     }
 
-    public int getPeriodo() {
-        return periodo;
-    }
+    public int getPeriodo() { return periodo; }
 
     public void setPeriodo(int periodo) {
         if (periodo < 0 || periodo > 12) {
@@ -68,9 +65,7 @@ public class Atendimento {
         this.periodo = periodo;
     }
 
-    public String getPsicologo() {
-        return psicologo;
-    }
+    public String getPsicologo() { return psicologo; }
 
     public void setPsicologo(String psicologo) {
         if (psicologo == null) {
@@ -79,35 +74,35 @@ public class Atendimento {
         this.psicologo = psicologo;
     }
 
-    public LocalDate getData() {
-        return data;
-    }
+    public int getContatoAluno() { return contatoAluno; }
 
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
+    public void setContatoAluno(int contatoAluno) { this.contatoAluno = contatoAluno; }
 
-    public String getAnotacoes() {
-        return anotacoes;
-    }
+    public int getContatoRelacionado() { return contatoRelacionado; }
 
-    public void setAnotacoes(String anotacoes) {
-        this.anotacoes = anotacoes;
-    }
+    public void setContatoRelacionado(int contatoRelacionado) { this.contatoRelacionado = contatoRelacionado; }
 
-    public List<Marcador> getMarcadores() {
-        return marcadores;
-    }
+    public String getLaudo() { return laudo; }
 
-    public void adicionarMarcador(Marcador marcador) {
-        marcadores.add(marcador);
-    }
+    public void setLaudo(String laudo) { this.laudo = laudo; }
 
-    public void removerMarcador(Marcador marcador) {
-        marcadores.remove(marcador);
-    }
+    public LocalDate getData() { return data; }
+
+    public void setData(LocalDate data) { this.data = data; }
+
+    public String getAnotacoes() { return anotacoes; }
+
+    public void setAnotacoes(String anotacoes) { this.anotacoes = anotacoes; }
+
+    public List<Marcador> getMarcadores() { return marcadores; }
+
+    public void setMarcadores(List<Marcador> marcadores) { this.marcadores = marcadores; }
+
+    public void adicionarMarcador(Marcador marcador) { marcadores.add(marcador); }
+
+    public void removerMarcador(Marcador marcador) { marcadores.remove(marcador); }
 
     public String toString() {
-        return "Atendimento [ id="+ id + ", nome=" + nome + ", curso=" + curso + ", periodo= "+ periodo + ", psicologo= "+ psicologo + ", data= "+ data + ", anotacoes= "+ anotacoes + ", marcadores= "+ marcadores.stream().map(Marcador::getNome).toList() +"]";
+        return "Atendimento [ id="+ id + ", curso=" + curso + ", periodo= "+ periodo + ", psicologo= "+ psicologo + ", data= "+ data + ", anotacoes= "+ anotacoes + ", marcadores= "+ marcadores.stream().map(Marcador::getNome).toList() +"]";
     }
 }

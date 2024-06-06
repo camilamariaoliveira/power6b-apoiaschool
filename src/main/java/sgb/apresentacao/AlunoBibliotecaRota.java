@@ -39,7 +39,6 @@ public class AlunoBibliotecaRota  extends VerticalLayout {
 
         upload.addSucceededListener(event -> {
             String fileName = event.getFileName();
-            System.out.println(fileName);
             InputStream inputStream = memoryBuffer.getInputStream();
             try {
                 processExcelFile(inputStream, fileName);

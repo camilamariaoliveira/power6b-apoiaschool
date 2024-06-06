@@ -36,7 +36,7 @@ public class AtendimentoServico {
 
         if (optionalAtendimentoExistente.isPresent()) {
             Atendimento atendimentoExistente = optionalAtendimentoExistente.get();
-            atendimentoExistente.setNome(atendimentoAtualizado.getNome());
+            atendimentoExistente.setAluno(atendimentoAtualizado.getAluno());
             atendimentoExistente.setCurso(atendimentoAtualizado.getCurso());
             atendimentoExistente.setPeriodo(atendimentoAtualizado.getPeriodo());
             atendimentoExistente.setData(atendimentoAtualizado.getData());
