@@ -33,7 +33,8 @@ public class AtendimentoEdicaoRota extends VerticalLayout implements HasUrlParam
             try {
                 formulario.preencherAtendimento(atendimento);
                 servico.atualizarAtendimento(atendimento);
-                UI.getCurrent().navigate(AtendimentoHistoricoRota.class);
+                Notification.show("Modificações salvas com sucesso", 3000, Notification.Position.MIDDLE);
+                UI.getCurrent().navigate("");
 
             } catch (Exception e){
                 Notification.show("Erro ao atualizar atendimento: " + e.getMessage(), 3000, Notification.Position.MIDDLE);

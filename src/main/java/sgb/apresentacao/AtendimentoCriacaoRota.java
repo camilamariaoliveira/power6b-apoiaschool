@@ -26,8 +26,8 @@ public class AtendimentoCriacaoRota extends VerticalLayout {
         formulario.addSaveListener(event -> {
             Atendimento atendimento = formulario.criarAtendimento();
             servico.criarAtendimento(atendimento);
-            Notification.show("Atendimento salvo com sucesso");
-            UI.getCurrent().navigate(AtendimentoHistoricoRota.class);
+            Notification.show("Atendimento salvo com sucesso", 3000, Notification.Position.MIDDLE);
+            UI.getCurrent().navigate("");
         });
 
     }

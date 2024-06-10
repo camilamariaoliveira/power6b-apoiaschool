@@ -2,6 +2,7 @@ package sgb.apresentacao;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
@@ -57,21 +58,12 @@ public class AtendimentoFormulario extends FormLayout {
         this.marcadorServico = marcadorServico;
         this.alunoServico = alunoServico;
         this.marcadoresSelecionados = new ArrayList<>(); // Para não iniciar como null
-        initializeForm();
+        inicializarForm();
         addMarcadores();
         addAlunos();
     }
 
-//    public AtendimentoFormulario(MarcadorServico marcadorServico, AlunoServico alunoServico) {
-//        this.marcadorServico = marcadorServico;
-//        this.alunoServico = alunoServico;
-//        initializeForm();
-//        marcadoresSelecao.setEnabled(false);
-//        Label labelSemMarcadores = new Label("Nenhum marcador disponível");
-//        container.add(labelSemMarcadores);
-//    }
-
-    private void initializeForm() {
+    private void inicializarForm() {
         container = new VerticalLayout();
         idCampo = new TextField("Id: ");
         idCampo.setEnabled(false);
@@ -83,7 +75,7 @@ public class AtendimentoFormulario extends FormLayout {
         cursoCampo.setLabel("Curso: ");
         cursoCampo.setItems("CC","Design","GTI","ADS","SI","Pós","Mestrado","Doutorado","Outro");
         cursoCampo.setPlaceholder("Curso...");
-        cursoCampo.isReadOnly();
+        cursoCampo.setEnabled(false);
 
         dataCampo = new DatePicker();
         dataCampo.setLabel("Data do últ. atendimento: ");
@@ -94,7 +86,7 @@ public class AtendimentoFormulario extends FormLayout {
         periodoCampo.setStepButtonsVisible(true);
         periodoCampo.setMax(12);
         periodoCampo.setMin(1);
-        periodoCampo.isReadOnly();
+        periodoCampo.setEnabled(false);
 
         apoioCampo = new Select<>();
         apoioCampo.setLabel("Último Atendente: ");
@@ -114,8 +106,8 @@ public class AtendimentoFormulario extends FormLayout {
         saveButton = new Button("Salvar");
         saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        HorizontalLayout linha1 = new HorizontalLayout(idCampo,alunoComboBox,dataCampo);
-        HorizontalLayout linha2 = new HorizontalLayout(cursoCampo,periodoCampo,apoioCampo);
+        HorizontalLayout linha1 = new HorizontalLayout(idCampo,apoioCampo,dataCampo);
+        HorizontalLayout linha2 = new HorizontalLayout(alunoComboBox, cursoCampo,periodoCampo);
         HorizontalLayout linha3 = new HorizontalLayout(anotacoesCampo);
         HorizontalLayout linha4 = new HorizontalLayout(marcadoresSelecao, checkbox);
         HorizontalLayout linha5 = new HorizontalLayout(marcadoresContainer);
@@ -248,7 +240,7 @@ public class AtendimentoFormulario extends FormLayout {
 
     public void preencherCampos(Atendimento atendimento) {
         idCampo.setValue(String.valueOf(atendimento.getId()));
-        alunoComboBox.setValue(atendimento.getAluno());
+        alunoComboBox.setValue(alunoServico.listarAlunoPorId(atendimento.getAlunoId()));
         cursoCampo.setValue(atendimento.getCurso());
         periodoCampo.setValue(atendimento.getPeriodo());
         dataCampo.setValue(atendimento.getData());
