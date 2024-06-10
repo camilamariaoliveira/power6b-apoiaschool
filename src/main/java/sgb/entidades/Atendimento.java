@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public class Atendimento {
     private UUID id;
+    private UUID alunoId;
     private Aluno aluno;
     private String curso;
     private int periodo;
@@ -21,6 +22,7 @@ public class Atendimento {
     public Atendimento(Aluno aluno, LocalDate data, String psicologo, String anotacoes) {
         this.id = UUID.randomUUID();
         this.aluno = aluno;
+        this.alunoId = aluno.getId();
         this.curso= aluno.getCurso();
         this.periodo = aluno.getPeriodo();
         this.data = data;
@@ -37,6 +39,10 @@ public class Atendimento {
     }
 
     public Aluno getAluno() { return aluno; }
+
+    public UUID getAlunoId() {
+        return alunoId;
+    }
 
     public void setAluno(Aluno aluno) {
         if (aluno == null) {
